@@ -8,6 +8,7 @@ import com.day.cq.replication.Replicator;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageFilter;
 import com.day.cq.wcm.api.PageManager;
+import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.osgi.service.component.annotations.Component;
@@ -21,9 +22,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-@Component(service = EmailProcess.class,immediate = true)
+@Component(service = RepPage.class,immediate = true)
 public class RepPageImpl implements RepPage {
-    private static Logger log= LoggerFactory.getLogger(EmailProcess.class);
+    private static Logger LOGGER= LoggerFactory.getLogger(EmailProcess.class);
 
     @Reference
     protected ResourceResolverFactory resourceResolverFactory;
@@ -48,11 +49,12 @@ public class RepPageImpl implements RepPage {
                 Page currentPage=pageIterator.next();
                 ReplicationStatus replicationStatus=replicator.getReplicationStatus(session,currentPage.getPath());
                 if(replicationStatus.isActivated()==false){
-                    log.info("{}",currentPage.getPageTitle());
+                    LOGGER.info("{}",currentPage.getPageTitle());
                     nonReplicatedPages.add(currentPage.getPageTitle());
                 }
             }
-        } catch (org.apache.sling.api.resource.LoginException e) {
+        } catch (LoginException e) {
+            LOGGER.info("Exception occured:----"+e);
             e.printStackTrace();
         }
         return nonReplicatedPages;

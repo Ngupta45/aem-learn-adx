@@ -1,7 +1,5 @@
 package com.adx.core.schedulers;
 
-
-
 import com.day.cq.workflow.WorkflowException;
 import com.day.cq.workflow.WorkflowService;
 import com.day.cq.workflow.WorkflowSession;
@@ -42,6 +40,7 @@ public class MidNightScheduler implements Runnable {
     @Activate
     public void activate(MidNightSchedulerConfig conf)
     {
+        schedulerId = conf.schdulerName().hashCode();
         emailId = conf.getEmailID();
         schedulerName = conf.schdulerName();
         ScheduleOptions scheduleOptions = scheduler.EXPR(conf.getCronExpression());

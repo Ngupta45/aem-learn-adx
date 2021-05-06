@@ -2,8 +2,11 @@ package com.adx.core.service;
 
 
 import com.adx.core.service.impl.RepPageImpl;
+
+import com.day.cq.mcm.emailprovider.EmailService;
 import com.day.cq.workflow.WorkflowSession;
 import com.day.cq.workflow.exec.WorkItem;
+import com.day.cq.workflow.exec.WorkflowData;
 import com.day.cq.workflow.exec.WorkflowProcess;
 import com.day.cq.workflow.metadata.MetaDataMap;
 import org.osgi.service.component.annotations.Component;
@@ -18,13 +21,24 @@ import org.slf4j.LoggerFactory;
         )
 public class EmailProcess implements WorkflowProcess {
 
-    Logger logger = LoggerFactory.getLogger(EmailProcess.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(EmailProcess.class);
 
     @Reference
     RepPageImpl repPage;
 
+    @Reference
+    EmailSenderService emailSenderService;
+
     @Override
     public void execute(WorkItem workItem, WorkflowSession workflowSession, MetaDataMap metaDataMap){
+
+        try{
+            WorkflowData workflowData = workItem.getWorkflowData();
+//            String mailTo ="abc@gmail.com";
+            emailSenderService.sendMail(repPage.getNonReplicatedPages());
+        }catch(Exception e){
+            LOGGER.info("[ EMAIL PROCESS ]-Exception occured :  ",e);
+        }
 
     }
 }
