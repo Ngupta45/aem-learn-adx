@@ -4,7 +4,7 @@
     debug.email="{Boolean}false"
     from.address="dangerxkills@gmail.com"
     smtp.host="smtp.gmail.com"
-    smtp.password="@passwordGMAIL21998"
+    smtp.password=""
     smtp.port="{Long}465"
     smtp.ssl="{Boolean}true"
     smtp.starttls="{Boolean}false"

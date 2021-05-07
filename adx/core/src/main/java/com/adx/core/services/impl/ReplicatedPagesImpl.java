@@ -50,7 +50,6 @@ public class ReplicatedPagesImpl implements ReplicatedPages {
         List<String> nonReplicatedPages = new ArrayList<String>();
         try {
             ResourceResolver resourceResolver = ResolverUtil.newResolver(resourceResolverFactory);
-            PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
             Session session = resourceResolver.adaptTo(Session.class);
 
             //send all the un replicated pages
@@ -76,18 +75,6 @@ public class ReplicatedPagesImpl implements ReplicatedPages {
                     }
                 } catch (RepositoryException e) {
                     e.printStackTrace();
-                }
-            }
-
-            //send the unreplicated pages only from a site
-            Page page = pageManager.getPage("/content/aemgeeks_example");
-            Iterator<Page> rootPageIterator = page.listChildren(new PageFilter(), true);
-            while (rootPageIterator.hasNext()) {
-                Page childPage = rootPageIterator.next();
-                ReplicationStatus replicationStatus = replicator.getReplicationStatus(session, childPage.getPath());
-                if (replicationStatus.isActivated() == false) {
-//                    nonReplicatedPages.add(childPage.getTitle());
-                    LOGS.info("The title of page: - {} ", childPage.getTitle());
                 }
             }
             return nonReplicatedPages;
