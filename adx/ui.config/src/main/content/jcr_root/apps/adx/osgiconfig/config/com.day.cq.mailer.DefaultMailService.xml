@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="sling:OsgiConfig"
+          debug.email="{Boolean}false"
+          from.address="mailertrail@gmail.com"
+          smtp.host="smtp.gmail.com"
+          smtp.password="Animesh10"
+          smtp.port="587"
+          smtp.ssl="{Boolean}false"
+          smtp.starttls="{Boolean}true"
+          smtp.user="mailertrail@gmail.com"/>
