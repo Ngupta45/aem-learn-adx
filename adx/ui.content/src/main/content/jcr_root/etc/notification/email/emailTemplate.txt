@@ -1,0 +1,15 @@
+Subject: Auto Generated Mail 
+
+
+Hi,
+
+List of Non - Replicated Pages under ${pagePath}:-
+
+${message}
+
+From,
+Animesh Kumar Jain 
+
+-------------------------------------------------------
+This is an automatic generated message. Please do not reply.
+

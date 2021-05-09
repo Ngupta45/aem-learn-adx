@@ -4,4 +4,7 @@
     <filter root="/content/adx" mode="merge"/>
     <filter root="/content/dam/adx" mode="merge"/>
     <filter root="/content/experience-fragments/adx" mode="merge"/>
+    <filter root="/conf/global" mode="merge"/>
+    <filter root="/etc" mode="merge"/>
+    <filter root="/var" mode="merge"/>
 </workspaceFilter>
