@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="sling:OsgiConfig"
+    debug.email="{Boolean}false"
+    from.address="dangerxkills@gmail.com"
+    smtp.host="smtp.gmail.com"
+    smtp.password=""
+    smtp.port="{Long}465"
+    smtp.ssl="{Boolean}true"
+    smtp.starttls="{Boolean}false"
+    smtp.user="dangerxkills@gmail.com"/>

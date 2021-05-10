@@ -98,3 +98,10 @@ node/
 # Tests
 coverage/
 reports/
+
+#UI
+ui.frontend/node
+ui.frontend/node_modules
+ui.frontend/package-lock.json
+
+#chetan
