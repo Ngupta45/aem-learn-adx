@@ -1,4 +1,4 @@
-package com.mysite.core.schedulers;
+package com.adx.core.schedulers;
 
 import com.day.cq.workflow.WorkflowException;
 import com.day.cq.workflow.WorkflowService;

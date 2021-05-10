@@ -1,10 +1,11 @@
-package com.mysite.core.services.impl;
+package com.adx.core.Services.impl;
 
+import com.adx.core.Services.ReplicatedPages;
 import com.day.cq.replication.ReplicationStatus;
 import com.day.cq.replication.Replicator;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
-import com.mysite.core.services.ReplicatedPages;
+import com.adx.core.Services.ReplicatedPages;
 import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.ResourceResolverFactory;

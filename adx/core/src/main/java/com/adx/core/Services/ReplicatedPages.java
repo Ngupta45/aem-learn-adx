@@ -1,4 +1,4 @@
-package com.mysite.core.services;
+package com.adx.core.Services;
 
 import java.util.List;
 

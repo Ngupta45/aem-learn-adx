@@ -1,4 +1,4 @@
-package com.mysite.core.models;
+package com.adx.core.models;
 
 import com.adobe.granite.workflow.WorkflowException;
 import com.adobe.granite.workflow.WorkflowSession;
@@ -8,13 +8,20 @@ import com.adobe.granite.workflow.exec.WorkflowProcess;
 import com.adobe.granite.workflow.metadata.MetaDataMap;
 import com.day.cq.mailer.MessageGateway;
 import com.day.cq.mailer.MessageGatewayService;
-import com.mysite.core.services.ReplicatedPages;
+import com.adx.core.Services.ReplicatedPages;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
+
+import com.adobe.acs.commons.email.EmailService;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component(
         service=WorkflowProcess.class,
@@ -26,8 +33,9 @@ public class CustomWorkflow implements WorkflowProcess
 
     @Reference
     ReplicatedPages replicatedPages;
-    MessageGateway<Email> messageGateway;
-    private MessageGatewayService messageGatewayService;
+    @Reference
+    EmailService emailService;
+
 
     @Override
     public void execute(WorkItem workItem, WorkflowSession workflowSession, MetaDataMap args) throws WorkflowException
@@ -42,15 +50,13 @@ public class CustomWorkflow implements WorkflowProcess
                 log.info("pages are {}", replicatedPages.NonReplicated());
 
 
-                Email email = new SimpleEmail();
-                String emailto="prakharkhare52.rk@gmail.com";
-
-                    email.addTo(emailto);
-                    email.setSubject("Page that are not replicated");
-                    email.setMsg(String.valueOf(replicatedPages.NonReplicated()));
-                    email.setFrom("prakharkhare52.rk@gmail.com");
-                    messageGateway=messageGatewayService.getGateway(Email.class);
-                    messageGateway.send((Email) email);
+                String path= "/content/weretail";
+                String templatePath = "/etc/notification/email/acs-commons/emailtemplate.txt";
+                Map<String,String> hm = new HashMap<String,String>();
+                hm.put("message",String.valueOf(replicatedPages.NonReplicated()));
+                hm.put("path",path);
+                String[] receivers = {"prakharkhare52.rk@gmail.com"};
+                List<String> list = emailService.sendEmail(templatePath, hm, receivers);
 
 
 
