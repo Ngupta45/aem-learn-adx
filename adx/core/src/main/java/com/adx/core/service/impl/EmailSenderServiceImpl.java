@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Component(service = EmailSenderService.class,immediate = true)
 public class EmailSenderServiceImpl  implements EmailSenderService{
@@ -22,8 +22,9 @@ public class EmailSenderServiceImpl  implements EmailSenderService{
     @Override
     public void sendMail(List<String> nonRepPAges)
     {
+        LOGGER.info("start of [EmailSenderSericeImpl]sendMail method.");
         try{
-            String templatePath = "/etc/notification/email/default/emailTemplate.txt";
+            String templatePath = "/etc/notification/email/default/emailcontent.txt";
             HashMap<String,String> params = new HashMap<>();
             params.put("msg",nonRepPAges.toString());
 
@@ -38,6 +39,7 @@ public class EmailSenderServiceImpl  implements EmailSenderService{
         catch(Exception e){
             LOGGER.info("[EmailSenderSericeImpl] Exception Occured : ",e);
         }
+        LOGGER.info("start of [EmailSenderSericeImpl]sendMail method.");
 
     }
 

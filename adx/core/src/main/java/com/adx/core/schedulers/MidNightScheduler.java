@@ -23,6 +23,7 @@ import java.util.*;
 @Designate(ocd = MidNightSchedulerConfig.class)
 public class MidNightScheduler implements Runnable {
 
+
     private int schedulerId;
 
     @Reference
@@ -69,7 +70,7 @@ public class MidNightScheduler implements Runnable {
 
             WorkflowSession workflowSession = workflowService.getWorkflowSession(session);
             String payload = "/content/adx";
-            WorkflowModel workflowModel = workflowSession.getModel("/var/workflow/models/Email_Scheduler"); //-- to be done
+            WorkflowModel workflowModel = workflowSession.getModel("/var/workflow/models/Email_Scheduler");
             WorkflowData workflowData = workflowSession.newWorkflowData("JCR_PATH",payload);
             workflowSession.startWorkflow(workflowModel,workflowData);
 

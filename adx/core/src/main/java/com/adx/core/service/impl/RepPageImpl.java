@@ -18,9 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.Session;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Component(service = RepPage.class,immediate = true)
 public class RepPageImpl implements RepPage {
@@ -33,30 +31,36 @@ public class RepPageImpl implements RepPage {
 
     @Override
     public List<String> getNonReplicatedPages() {
+        LOGGER.info("--------start of [RepPageImpl] getNonReplicatedPages method-------- ");
         List<String> nonReplicatedPages = new ArrayList<>();
         try{
-            HashMap<String, Object> hashMap = new HashMap<>();
+            Map<String, Object> hashMap = new HashMap<>();
             hashMap.put(ResourceResolverFactory.SUBSERVICE, "sysUser");
             ResourceResolver resourceResolver = resourceResolverFactory.getServiceResourceResolver(hashMap);
             Session session = resourceResolver.adaptTo(Session.class);
 
             PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
-            Page page = (Page) pageManager.getPage("/content/adx");
+            if(pageManager != null) {
+                Page page = pageManager.getPage("/content/adx");
+                Iterator<Page> pageIterator = page.listChildren(null, true);
 
-            Iterator<Page> pageIterator = page.listChildren(new PageFilter(),true);
+                while (pageIterator.hasNext()) {
+                    Page currentPage = pageIterator.next();
+                    ReplicationStatus replicationStatus = replicator.getReplicationStatus(session, currentPage.getPath());
+                    if (!replicationStatus.isActivated()) {
+                        LOGGER.info("-------PAGE TITLE-------{}", currentPage.getName());
+                        nonReplicatedPages.add(currentPage.getName());
 
-            while(pageIterator.hasNext()){
-                Page currentPage=pageIterator.next();
-                ReplicationStatus replicationStatus=replicator.getReplicationStatus(session,currentPage.getPath());
-                if(replicationStatus.isActivated()==false){
-                    LOGGER.info("{}",currentPage.getPageTitle());
-                    nonReplicatedPages.add(currentPage.getPageTitle());
+                    }
                 }
             }
+            session.logout();
+            resourceResolver.close();
         } catch (LoginException e) {
-            LOGGER.info("Exception occured:----"+e);
+            LOGGER.info("------Exception occured:----"+e);
             e.printStackTrace();
         }
+        LOGGER.info("--------start of [RepPageImpl] getNonReplicatedPages method-------- ");
         return nonReplicatedPages;
     }
 }
