@@ -50,7 +50,7 @@ public class CustomWorkflow implements WorkflowProcess
                 log.info("pages are {}", replicatedPages.NonReplicated());
 
 
-                String path= "/content/weretail";
+                String path= "/content/mysite";
                 String templatePath = "/etc/notification/email/acs-commons/emailtemplate.txt";
                 Map<String,String> hm = new HashMap<String,String>();
                 hm.put("message",String.valueOf(replicatedPages.NonReplicated()));
