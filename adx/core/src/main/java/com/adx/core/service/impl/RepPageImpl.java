@@ -1,0 +1,67 @@
+package com.adx.core.service.impl;
+
+
+import com.adx.core.service.EmailProcess;
+import com.adx.core.service.RepPage;
+import com.day.cq.replication.ReplicationStatus;
+import com.day.cq.replication.Replicator;
+import com.day.cq.wcm.api.Page;
+import com.day.cq.wcm.api.PageFilter;
+import com.day.cq.wcm.api.PageManager;
+import org.apache.sling.api.resource.LoginException;
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.jcr.Session;
+import java.util.ArrayList;
+import java.util.*;
+
+@Component(service = RepPage.class,immediate = true)
+public class RepPageImpl implements RepPage {
+    private static Logger LOGGER= LoggerFactory.getLogger(EmailProcess.class);
+
+    @Reference
+    protected ResourceResolverFactory resourceResolverFactory;
+    @Reference
+    protected Replicator replicator;
+
+    @Override
+    public List<String> getNonReplicatedPages() {
+        LOGGER.info("--------start of [RepPageImpl] getNonReplicatedPages method-------- ");
+        List<String> nonReplicatedPages = new ArrayList<>();
+        try{
+            Map<String, Object> hashMap = new HashMap<>();
+            hashMap.put(ResourceResolverFactory.SUBSERVICE, "sysUser");
+            ResourceResolver resourceResolver = resourceResolverFactory.getServiceResourceResolver(hashMap);
+            Session session = resourceResolver.adaptTo(Session.class);
+
+            PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
+            if(pageManager != null) {
+                Page page = pageManager.getPage("/content/adx");
+                Iterator<Page> pageIterator = page.listChildren(null, true);
+
+                while (pageIterator.hasNext()) {
+                    Page currentPage = pageIterator.next();
+                    ReplicationStatus replicationStatus = replicator.getReplicationStatus(session, currentPage.getPath());
+                    if (!replicationStatus.isActivated()) {
+                        LOGGER.info("-------PAGE TITLE-------{}", currentPage.getName());
+                        nonReplicatedPages.add(currentPage.getName());
+
+                    }
+                }
+            }
+            session.logout();
+            resourceResolver.close();
+        } catch (LoginException e) {
+            LOGGER.info("------Exception occured:----"+e);
+            e.printStackTrace();
+        }
+        LOGGER.info("--------start of [RepPageImpl] getNonReplicatedPages method-------- ");
+        return nonReplicatedPages;
+    }
+}
+
