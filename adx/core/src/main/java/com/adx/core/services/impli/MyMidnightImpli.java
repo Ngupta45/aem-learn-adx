@@ -39,13 +39,13 @@ public class MyMidnightImpli implements MyMidnightProcess {
             Session session = resourceResolver.adaptTo(Session.class);
             PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
             Page page= (Page) pageManager.getPage("/content/weretail");
-            Iterator<Page> pageIterator=page.listChildren(new PageFilter(),true);
+            Iterator<Page> pageIterator=page.listChildren(null,true);
             while(pageIterator.hasNext()){
                 Page descendentPage=pageIterator.next();
                 ReplicationStatus replicationStatus=replicator.getReplicationStatus(session,descendentPage.getPath());
                 if(replicationStatus.isActivated()==false){
-                    log.info("{}",descendentPage.getPageTitle());
-                    nonReplicatedPages.add(descendentPage.getPageTitle());
+                    log.info("{---------error------}",descendentPage.getName());
+                    nonReplicatedPages.add(descendentPage.getName());
                 }
             }
         } catch (org.apache.sling.api.resource.LoginException e) {

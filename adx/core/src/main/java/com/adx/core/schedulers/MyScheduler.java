@@ -53,7 +53,7 @@ public class MyScheduler implements  Runnable{
                 description = "Enter Email",
                 type = AttributeType.STRING
         )
-        public String[] getEmail() default "himanshu.gupta@argildx.com";
+        public String[] getEmail();
 
         @AttributeDefinition(
                 name = "cron Expression",

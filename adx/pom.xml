@@ -695,8 +695,17 @@ Bundle-DocURL:
                 <version>${core.wcm.components.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.adobe.acs</groupId>
+                <artifactId>acs-aem-commons-bundle</artifactId>
+                <version>4.11.2</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
 
+
+
 </project>
+

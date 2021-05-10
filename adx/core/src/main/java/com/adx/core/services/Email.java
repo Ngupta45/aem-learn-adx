@@ -5,9 +5,9 @@ import com.day.cq.workflow.WorkflowSession;
 import com.day.cq.workflow.exec.WorkItem;
 import com.day.cq.workflow.exec.WorkflowProcess;
 import com.day.cq.workflow.metadata.MetaDataMap;
-import org.apache.sling.api.resource.LoginException;
+
 import org.osgi.service.component.annotations.Component;
-import com.adx.core.services.impli.MyMidnightImpli;
+import com.adx.core.services.MyMidnightProcess;
 import org.osgi.service.component.annotations.Reference;
 import com.adobe.acs.commons.email.EmailService;
 import java.util.HashMap;
@@ -22,8 +22,9 @@ import org.slf4j.LoggerFactory;
 public class Email implements WorkflowProcess {
     Logger logger = LoggerFactory.getLogger(Email.class);
     @Reference
-    MyMidnightImpli myMidnightProcessImpli;
+    MyMidnightProcess myMidnightProcess;
 
+    @Reference
     EmailService emailService;
 
     @Override
@@ -34,12 +35,9 @@ public class Email implements WorkflowProcess {
             String templatePath = "/etc/notification/email/template.txt";
             HashMap<String,String> hm = new HashMap<>();
             hm.put("path",path);
-            hm.put("message",String.valueOf(myMidnightProcessImpli.getNonReplicatedPages()));
+            hm.put("message",String.valueOf(myMidnightProcess.getNonReplicatedPages()));
             String[] receivers = {"himanshujiit23@gmail.com"};
             List<String> list = emailService.sendEmail(templatePath, hm, receivers);
-
-
-
     }
 }
 
