@@ -142,6 +142,8 @@
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.0.0</version>
                 </plugin>
+
+
                 <!-- BND Maven Plugin -->
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
@@ -695,6 +697,11 @@ Bundle-DocURL:
                 <version>${core.wcm.components.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.adobe.acs</groupId>
+                <artifactId>acs-aem-commons-bundle</artifactId>
+                <version>4.11.2</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
