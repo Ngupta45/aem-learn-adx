@@ -13,7 +13,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.jcr.Session;
 import java.util.*;
 @Component(
@@ -23,7 +22,6 @@ import java.util.*;
                 "label=My Service Implementation"
         }
 )
-
 public class PageReplication implements ReplicatedPages
 {
     private static final Logger log = LoggerFactory.getLogger(PageReplication.class);
@@ -55,10 +53,8 @@ public class PageReplication implements ReplicatedPages
                    nonreplicatedpages.add(children.getTitle());
                }
            }
-
-
-
-       } catch (LoginException e)
+       }
+       catch (LoginException e)
        {
            e.printStackTrace();
        }
