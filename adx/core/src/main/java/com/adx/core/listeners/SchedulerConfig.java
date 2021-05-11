@@ -37,12 +37,13 @@ public class SchedulerConfig implements Runnable{
     @Reference
     Scheduler scheduler;
 
+
     @ObjectClassDefinition(
             name="Workflow Scheduler OCD",
             description = "Email workflow Scheduler Assignment"
     )
-
     public @interface ServiceConfig{
+
         @AttributeDefinition(
                 name = "Scheduler Name",
                 description = "Enter Scheduler Name",
@@ -67,18 +68,20 @@ public class SchedulerConfig implements Runnable{
 
     private String schedulerName;
     private String[] email;
-
+    private int schedulerId;
 
     @Activate
     public  void activate(SchedulerConfig.ServiceConfig serviceConfig){
 
+        schedulerId=serviceConfig.getSchedulerName().hashCode();
         email=serviceConfig.getEmail();
         schedulerName = serviceConfig.getSchedulerName();
+
         ScheduleOptions scheduleOptions=scheduler.EXPR(serviceConfig.getCronExpression());
         scheduleOptions.name(serviceConfig.getSchedulerName());
-        //scheduleOptions.canRunConcurrently(false);
         scheduler.schedule(this,scheduleOptions);
-        ScheduleOptions optionsNow=scheduler.NOW(3,5);
+
+        ScheduleOptions optionsNow=scheduler.NOW(1,1);
         scheduler.schedule(this,optionsNow);
 
     }
@@ -88,9 +91,10 @@ public class SchedulerConfig implements Runnable{
         scheduler.unschedule(schedulerName);
     }
 
-    public String[] getEmail(){
-        return email;
-    }
+//   // public String[] getEmail(){
+//        return email;
+//    }
+
     @Override
     public void run() {
         try {
@@ -100,7 +104,7 @@ public class SchedulerConfig implements Runnable{
             Session session = resourceResolver.adaptTo(Session.class);
             WorkflowSession workflowSession = workflowService.getWorkflowSession(session);
 
-            String payload="/content/myaemproject";
+            String payload="/content/adx";
             WorkflowModel workflowModel = workflowSession.getModel("/var/workflow/models/Demo");
             WorkflowData workflowData = workflowSession.newWorkflowData("JCR_PATH",payload);
             workflowSession.startWorkflow(workflowModel,workflowData);
@@ -112,5 +116,3 @@ public class SchedulerConfig implements Runnable{
 
     }
 }
-/*
- */

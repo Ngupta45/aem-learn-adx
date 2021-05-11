@@ -33,30 +33,32 @@ public class NonReplicatedPagesImpli implements NonReplicatedPages {
 
     @Override
     public List<String> getNonReplicatedPages() {
+
+        log.info("-------getNonReplicatedPages() start-------");
+
         List<String> nonReplicatedPages = new ArrayList<>();
         try{
             HashMap<String, Object> param = new HashMap<>();
             param.put(ResourceResolverFactory.SUBSERVICE, "sakshi");
             ResourceResolver resourceResolver = resourceResolverFactory.getServiceResourceResolver(param);
             Session session = resourceResolver.adaptTo(Session.class);
+
             PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
-            Page page= (Page) pageManager.getPage("/content/myaemproject");
+            Page page= (Page) pageManager.getPage("/content/adx");
             Iterator<Page> pageIterator=page.listChildren(new PageFilter(),true);
+
             while(pageIterator.hasNext()){
-                Page descendentPage=pageIterator.next();
-                ReplicationStatus replicationStatus=replicator.getReplicationStatus(session,descendentPage.getPath());
+                Page childPage=pageIterator.next();
+                ReplicationStatus replicationStatus=replicator.getReplicationStatus(session,childPage.getPath());
                 if(replicationStatus.isActivated()==false){
-                    log.info("{}",descendentPage.getPageTitle());
-                    nonReplicatedPages.add(descendentPage.getPageTitle());
-
+                    log.info("Non repliacted pages are:",childPage.getName());
+                    nonReplicatedPages.add(childPage.getName());
                 }
-
             }
         } catch (org.apache.sling.api.resource.LoginException e) {
             e.printStackTrace();
         }
-
+        log.info("-------getNonReplicatedPages() end-------");
         return nonReplicatedPages;
     }
 }
-
